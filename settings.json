@@ -1,0 +1,5 @@
+{
+    "port": 3434,
+    "checkClientInterval": 60000,
+    "failOverInterval": 20000
+}

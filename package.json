@@ -1,0 +1,15 @@
+{
+  "name": "rise-sentinel",
+  "version": "0.1.0",
+  "description": "High availability for RISE Delegates Nodes",
+  "main": "sentinel.js",
+  "repository": "https://github.com/jarenal/rise-sentinel.git",
+  "author": "Jose Antonio <jguidos@hotmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^4.17.15",
+    "log4js": "^6.1.2",
+    "risejs": "^1.5.1",
+    "socket.io": "^2.3.0"
+  }  
+}
