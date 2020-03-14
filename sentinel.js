@@ -8,7 +8,7 @@ let nodes = {};
 
 log4js.configure({
     appenders: {
-        console: { type: 'console' }
+        console: { type: 'console', layout: {type: 'basic'} }
     }, 
     categories: {
         default: { appenders: ['console'], level: 'debug' }
