@@ -29,23 +29,23 @@ io.on('connection', (socket) => {
 
         // Check node
         const nodeInterval = setInterval(() => {
-            logger.debug('-------------------------------------------');
-            logger.debug('Checking client: alias=' + nodes[socketId].alias + ', role=' + nodes[socketId].role + ', pings=' + nodes[socketId].pings + ', fails=' + nodes[socketId].fails);
-
+            logger.debug('------------------------------------------------------------------');
+            logger.debug('[' + nodeAlias + '] Checking client: alias=' + nodes[socketId].alias + ', role=' + nodes[socketId].role + ', pings=' + nodes[socketId].pings + ', fails=' + nodes[socketId].fails);
+            logger.debug('------------------------------------------------------------------');
+            let nodeAlias = nodes[socketId].alias;
             mainnet.blocks
             .getHeight()
             .then(function(response) {
-                logger.debug('Mainnet height received: ', response);
                 if (typeof response.height === 'undefined') {
-                    logger.error('Mainnet connection error');
+                    logger.error('[' + nodeAlias + '] Mainnet connection error');
                     return;
                 }
                 mainnetHeight = response.height;
                 nodes[socketId].riseClient.blocks
                 .getHeight()
                 .then(function(response) {
-                    logger.debug('mainnet height: ', mainnetHeight);
-                    logger.debug('client height: ', response.height);
+                    logger.debug('[' + nodeAlias + '] Mainnet height: ', mainnetHeight);
+                    logger.debug('[' + nodeAlias + '] Client height: ', response.height);
                     nodes[socketId].pings++;
                     if (mainnetHeight > response.height || typeof response.height === 'undefined') {
                         nodes[socketId].fails++;
@@ -54,16 +54,13 @@ io.on('connection', (socket) => {
                     }
                 })
                 .catch(function(err) {
-                    logger.error('Client connection error');
+                    logger.error('[' + nodeAlias + '] Client connection error');
                     nodes[socketId].fails++;
                 });                
             })
             .catch(function(err) {
-                logger.error('Mainnet connection error');
-            });
-
-            logger.debug('-------------------------------------------');
-        
+                logger.error('[' + nodeAlias + '] Mainnet connection error');
+            });    
         }, settings.checkClientInterval);
 
         nodes[socketId].interval = nodeInterval;
@@ -93,9 +90,9 @@ setInterval(() => {
     })
 
     if (!_.isEmpty(demote_slave) && slaves.length > 0) {
-        logger.info('We have to demote the master node! ' + demote_slave.alias);
+        logger.info('--- [' + demote_slave.alias + '] demoted!');
         let promote_master = slaves[_.random(slaves.length - 1)];
-
+        logger.info('+++ [' + promote_master.alias + '] promoted!');
         demote_slave.socket.emit("demote", "");
         nodes[demote_slave.socket.id].role = "slave";
         promote_master.socket.emit("promote", "");
