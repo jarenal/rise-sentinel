@@ -29,10 +29,12 @@ io.on('connection', (socket) => {
 
         // Check node
         const nodeInterval = setInterval(() => {
-            logger.debug('------------------------------------------------------------------');
-            logger.debug('[' + nodeAlias + '] Checking client: alias=' + nodes[socketId].alias + ', role=' + nodes[socketId].role + ', pings=' + nodes[socketId].pings + ', fails=' + nodes[socketId].fails);
-            logger.debug('------------------------------------------------------------------');
             let nodeAlias = nodes[socketId].alias;
+
+            logger.debug('------------------------------------------------------------------');
+            logger.debug('[' + nodeAlias + '] Checking client: role=' + nodes[socketId].role + ', pings=' + nodes[socketId].pings + ', fails=' + nodes[socketId].fails);
+            logger.debug('------------------------------------------------------------------');
+            
             mainnet.blocks
             .getHeight()
             .then(function(response) {
