@@ -29,7 +29,8 @@ io.on('connection', (socket) => {
 
         // Check node
         const nodeInterval = setInterval(() => {
-            logger.debug('Checking client: ', node.alias);
+            logger.debug('-------------------------------------------');
+            logger.debug('Checking client: alias=' + nodes[socketId].alias + ', role=' + nodes[socketId].role + ', pings=' + nodes[socketId].pings + ', fails=' + nodes[socketId].fails);
 
             mainnet.blocks
             .getHeight()
@@ -40,21 +41,24 @@ io.on('connection', (socket) => {
                 .getHeight()
                 .then(function(response) {
                     logger.debug('mainnet height: ', mainnetHeight);
-                    logger.debug('client height: ', response.data);
+                    logger.debug('client height: ', response.height);
                     nodes[socketId].pings++;
-                    if (mainnetHeight > response.data.height) {
+                    if (mainnetHeight > response.height) {
                         nodes[socketId].fails++;
                     } else {
                         nodes[socketId].fails = 0;
                     }
                 })
                 .catch(function(err) {
-                    logger.error('Client connection error: ', err);
+                    logger.error('Client connection error');
+                    nodes[socketId].fails++;
                 });                
             })
             .catch(function(err) {
-                logger.error('Mainnet connection error: ', err);
+                logger.error('Mainnet connection error');
             });
+
+            logger.debug('-------------------------------------------');
         
         }, settings.checkClientInterval);
 
