@@ -36,6 +36,10 @@ io.on('connection', (socket) => {
             .getHeight()
             .then(function(response) {
                 logger.debug('Mainnet height received: ', response);
+                if (typeof response.height === 'undefined') {
+                    logger.error('Mainnet connection error');
+                    return;
+                }
                 mainnetHeight = response.height;
                 nodes[socketId].riseClient.blocks
                 .getHeight()
@@ -43,7 +47,7 @@ io.on('connection', (socket) => {
                     logger.debug('mainnet height: ', mainnetHeight);
                     logger.debug('client height: ', response.height);
                     nodes[socketId].pings++;
-                    if (mainnetHeight > response.height) {
+                    if (mainnetHeight > response.height || typeof response.height === 'undefined') {
                         nodes[socketId].fails++;
                     } else {
                         nodes[socketId].fails = 0;
