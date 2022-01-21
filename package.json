@@ -8,7 +8,7 @@
   "license": "MIT",
   "dependencies": {
     "lodash": "^4.17.21",
-    "log4js": "^6.1.2",
+    "log4js": "^6.4.0",
     "risejs": "^1.5.1",
     "socket.io": "^2.4.0"
   }  
